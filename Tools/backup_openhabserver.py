@@ -1,4 +1,4 @@
 from REST.message_builder import RESTMessageBuilder
 
 rest_builder = RESTMessageBuilder()
-rest_builder.send_status(message="test")
+rest_builder.build_status_message(message_code=0)

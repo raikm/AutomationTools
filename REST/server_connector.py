@@ -11,6 +11,7 @@ class ServerConnector(object):
 
     def __init__(self, address=None):
         self.address = address
+        self.test_connection()
 
     @staticmethod
     def test_connection():
@@ -22,12 +23,15 @@ class ServerConnector(object):
                 return 1
         except Exception as e:
             print(e)
+            # TODO: send Mail
             return 1
         return 0
 
     def send_status(self, data_json):
-        if self.test_connection() is 0:
-            print(data_json)
-            address = self.address + "status"
-            response = requests.post(address, data=data_json)
+        try:
+            print(data_json)  # DEBUG
+            address = self.address + "scripts/status"
+            response = requests.post(address, json=data_json)
             print response.text
+        except Exception as e:
+            print(e)

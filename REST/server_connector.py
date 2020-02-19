@@ -16,7 +16,7 @@ class ServerConnector(object):
     @staticmethod
     def test_connection():
         try:
-            address = "http://192.168.0.34:8080/HomeAPI/rest/server/status"
+            address = "http://localhost:8080/HomeAPI/rest/server/status"
             resp = requests.get(address)
             if resp.status_code != 200:
                 print(resp.status_code)
@@ -32,6 +32,6 @@ class ServerConnector(object):
             print(data_json)  # DEBUG
             address = self.address + "scripts/status"
             response = requests.post(address, json=data_json)
-            print response.text
+            print(response.text)
         except Exception as e:
             print(e)

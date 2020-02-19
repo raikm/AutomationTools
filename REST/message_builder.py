@@ -12,8 +12,9 @@ from datetime import datetime
 SUCCESSFUL = "successful"
 timestamp = datetime.now().replace(microsecond=0).isoformat()
 
+
 class RESTMessageBuilder(object):
-    SERVER_ADDRESS = "http://192.168.0.34:8080/HomeAPI/rest/"
+    SERVER_ADDRESS = "http://localhost:8080/HomeAPI/rest/"
 
     def __init__(self):
         self.server = ServerConnector(self.SERVER_ADDRESS)
@@ -23,7 +24,8 @@ class RESTMessageBuilder(object):
         if SUCCESSFUL in message:
             message_code = 0
         script_name = self.get_filename_without_extension(script_path)
-        data = {"script": script_name, "script path": script_path, "status code": message_code, "status": message, "timestamp": timestamp}
+        data = {"script": script_name, "script_path": script_path, "status_code": message_code, "status": message,
+                "timestamp": timestamp}
         data_json = json.dumps(data)
         self.server.send_status(data_json)
 

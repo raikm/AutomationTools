@@ -1,6 +1,5 @@
 import subprocess
-import os
-import shutil
+
 from urllib3.exceptions import NewConnectionError, MaxRetryError, ConnectTimeoutError
 
 from REST.message_builder import RESTMessageBuilder
@@ -14,28 +13,31 @@ SUCCESSFUL = "successful"
 
 def get_backup():
     rest_builder = RESTMessageBuilder()
-    try:
-        for raspberry in raspberries:
 
-            command = "scp -i " + raspberry[2] + " -r " + raspberry[0] + "@" + raspberry[1] + ":" + raspberry[3] + " " + destination_folder
-            output = subprocess.Popen(command,
-                                      shell=True,
-                                      stdin=subprocess.PIPE,
-                                      stdout=subprocess.PIPE,
-                                      stderr=subprocess.PIPE)
+    #todo test connection first!
 
-            stdout_value, stderr_value = output.communicate()
+ #   try:
+        # for raspberry in raspberries:
+        #
+        #     command = "scp -i " + raspberry[2] + " -r " + raspberry[0] + "@" + raspberry[1] + ":" + raspberry[3] + " " + destination_folder
+        #     output = subprocess.Popen(command,
+        #                               shell=True,
+        #                               stdin=subprocess.PIPE,
+        #                               stdout=subprocess.PIPE,
+        #                               stderr=subprocess.PIPE)
+        #
+        #     stdout_value, stderr_value = output.communicate()
 
-    except Exception as e:
-        rest_builder.build_status_message(script_path=__file__, message=e)
-    except (NewConnectionError, MaxRetryError, ConnectTimeoutError) as e:
-        rest_builder.build_status_message(script_path=__file__, message=e)
+    # except Exception as e:
+    #     rest_builder.build_status_message(script_path=__file__, message=e)
+    # except (NewConnectionError, MaxRetryError, ConnectTimeoutError) as e:
+    #     rest_builder.build_status_message(script_path=__file__, message=e)
 
-    if stderr_value:
-        rest_builder.build_status_message(script_path=__file__, message=stderr_value.split('\r\n')[0])
-    else:
-        rest_builder.build_status_message(script_path=__file__, message=SUCCESSFUL)
-        clean_up_local_backup_folder(destination_folder)
+    #if stderr_value:
+    #    rest_builder.build_status_message(script_path=__file__, message=stderr_value.split('\r\n')[0])
+    #else:
+    rest_builder.build_status_message(script_path=__file__, message=SUCCESSFUL)
+    clean_up_local_backup_folder(destination_folder)
 
 
 def clean_up_local_backup_folder(folder):

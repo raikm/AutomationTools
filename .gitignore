@@ -1,5 +1,7 @@
 Tools/create_bill.py
 Resources/
-config.txt
-config.txt
+external_services.cfg
+external_services.cfg
 *.pyc
+credentials.json
+*.cfg

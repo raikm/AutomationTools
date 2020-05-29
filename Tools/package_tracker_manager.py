@@ -2,7 +2,7 @@ import aftership
 import configparser
 
 configParser = configparser.RawConfigParser()
-configFilePath = r'../config.txt'
+configFilePath = r'../external_services.cfg'
 configParser.read(configFilePath)
 
 api_key = configParser.get('aftership', 'api_key')

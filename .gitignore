@@ -5,3 +5,4 @@ external_services.cfg
 *.pyc
 credentials.json
 *.cfg
+Tools/token.pickle

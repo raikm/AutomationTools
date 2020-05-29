@@ -1,8 +1,4 @@
 Tools/create_bill.py
 Resources/
-external_services.cfg
-external_services.cfg
 *.pyc
-credentials.json
 *.cfg
-Tools/token.pickle

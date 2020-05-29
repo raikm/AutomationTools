@@ -2,3 +2,4 @@ Tools/create_bill.py
 Resources/
 config.txt
 config.txt
+*.pyc

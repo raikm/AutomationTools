@@ -34,7 +34,6 @@ class DBHandler(object):
             records = self.db.fetchall()
             if len(records) == 1:
                 row = records[0]
-                print("Supplier: ", row[2])
                 return row[2]
             else:
                 return None
@@ -43,15 +42,44 @@ class DBHandler(object):
             print("Failed to read data from sqlite table", error)
             return None
 
-    def get_supplier_hint(self, company_name):
+    def get_sender_hint(self, company_name):
         try:
             sqlite_select_query = "SELECT * from company_supplier where company = \"" + company_name + "\""
             self.db.execute(sqlite_select_query)
             records = self.db.fetchall()
             if len(records) == 1:
                 row = records[0]
-                print("Hint: ", row[3])
                 return row[3]
+            else:
+                return None
+
+        except sqlite3.Error as error:
+            print("Failed to read data from sqlite table", error)
+            return None
+
+    def get_supplier_hint(self, slug):
+        try:
+            sqlite_select_query = "SELECT * from suppliers where slug = \"" + slug + "\""
+            self.db.execute(sqlite_select_query)
+            records = self.db.fetchall()
+            if len(records) == 1:
+                row = records[0]
+                return row[4]
+            else:
+                return None
+
+        except sqlite3.Error as error:
+            print("Failed to read data from sqlite table", error)
+            return None
+
+    def get_supplier_name(self, domain):
+        try:
+            sqlite_select_query = "SELECT * from suppliers where mail_domain = \"" + domain + "\""
+            self.db.execute(sqlite_select_query)
+            records = self.db.fetchall()
+            if len(records) == 1:
+                row = records[0]
+                return row[2]
             else:
                 return None
 

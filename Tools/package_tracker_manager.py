@@ -20,6 +20,10 @@ def create_tracking(slug, tracking_number):
     return result['tracking']['id']
 
 
+def update_tracking(tracking_id, **values):
+    aftership.tracking.update_tracking(tracking_id=tracking_id, tracking=values)
+    return True
+
 # delete tracking
 def get_tracking(tracking_id, fields=None):
     try:

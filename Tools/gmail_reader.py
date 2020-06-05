@@ -4,8 +4,9 @@ import os.path
 from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
-from Tools.package_tracker_manager import get_couriers, create_tracking
+from Tools.package_tracker_manager import get_couriers, create_tracking, update_tracking
 from SQLite.db_handler import DBHandler
+import re
 
 credentials_path = "../Resources/credentials.json"
 token_path = "../Resources/token.pickle"
@@ -51,85 +52,109 @@ def get_messages(gmail_service):
         return msg;
 
 
-def get_forwared_message(msg):
-    _msg = service.users().messages().get(userId='me', id=msg['id']).execute()
+def data_encoder(text):
+    if len(text)>0:
+        message = base64.urlsafe_b64decode(text)
+        message = str(message, 'utf-8')
+    return message
 
-    if _msg.get("payload").get("body").get("data"):
-        return base64.urlsafe_b64decode(msg.get("payload").get("body").get("data").encode("ASCII")).decode("utf-8")
-    if _msg.get("payload").get("parts")[0].get("body").get("data"):
-        return (base64.urlsafe_b64decode(
-            _msg.get("payload").get("parts")[0].get("body").get("data").encode("ASCII")).decode(
-            "utf-8"))
-    if _msg.get("payload").get("parts")[0].get("parts")[0].get("body").get("data"):
-        return (base64.urlsafe_b64decode(
-            _msg.get("payload").get("parts")[0].get("parts")[0].get("body").get("data").encode("ASCII")).decode(
-            "utf-8"))
+
+def get_forwared_message(msg):
+    content = service.users().messages().get(userId='me', id=msg['id']).execute()
+    if "data" in content['payload']['body']:
+        _msg = content['payload']['body']['data']
+        return data_encoder(_msg)
+
+    elif "data" in content['payload']['parts'][0]['body']:
+        _msg = content['payload']['parts'][0]['body']['data']
+        return data_encoder(_msg)
+    elif "data" in content['payload']['parts'][0]['parts'][0]['body']:
+        _msg = content['payload']['parts'][0]['parts'][0]['body']['data']
+        return data_encoder(_msg)
+    elif "data" in content['payload']['parts'][0]['parts'][0]['parts'][0]['body']:
+        _msg = content['payload']['parts'][0]['parts'][0]['parts'][0]['body']['data']
+        return data_encoder(_msg)
+    elif "data" in content['payload']['parts']['parts'][0]['parts'][0]['parts'][0][0]['body']:
+        _msg = content['payload']['parts'][0]['parts'][0]['parts'][0]['parts'][0]['body']['data']
+        return data_encoder(_msg)
+    else:
+        print("body has no data.")
     return "error"
 
 
+def get_msg_id(msg):
+    try:
+        return service.users().messages().get(userId='me', id=msg['id']).execute()
+    except:
+        pass
+
+
+def get_fwd_mail_address(msg):
+    _msg = service.users().messages().get(userId='me', id=msg['id']).execute()
+    snippet = _msg.get("snippet")
+    at_symbol_position = snippet.find("@")
+
+    extracted_string = snippet[at_symbol_position:]
+    _list = extracted_string.split()
+    return _list[0].lower()
+
+
 def get_sender(msg):
-    messageheader = service.users().messages().get(userId="me", id=msg["id"], format="full", metadataHeaders=None).execute()
-    headers = messageheader["payload"]["headers"]
-    subject = [i['value'] for i in headers if i["name"] == "Subject"]
-    sender = (subject[0])
-    # check if in database exists
-    # TODO: get sender from first word in Mail
-    # check typos
-    # else try to get sender from fwd-mail
-    return sender
+    mail = get_fwd_mail_address(msg)
+    companies = db.get_all_values_from_column("company_supplier", "company")
+    for c in companies:
+        company = str(c)
+        if mail.__contains__(company.lower()):
+            return company
+
+    return "N.A."
 
 
 def get_supplier(sender_name, msg):
     # first check db if sender_name is defined in db
-    company = check_company_exist(sender_name)
-    if company is not None:
-        s = db.get_supplier_from_company(company)
+    if sender_name != "N.A.":
+        s = db.get_supplier_from_company(sender_name)
         return s
+    # no sender mail so check if mail is from supplier itself
     else:
-        #TODO
-        # extract infos from mailadress
-        _msg = msg
-        pass
-
-    return None
-
-
-def check_company_exist(sender_name):
-    companies = db.get_all_values_from_column("company_supplier", "company")
-    for c in companies:
-        company = str(c)
-        if company == sender_name:
-            return company
-        elif sender_name.__contains__(company):
-            return company
-        elif company.__contains__(sender_name):
-            return company
-    return None
+        mail = get_fwd_mail_address(msg)
+        mail_domain_list = db.get_all_values_from_column("suppliers", "mail_domain")
+        for d in mail_domain_list:
+            domain = str(d)
+            if mail.__contains__(domain.lower()):
+                supplier = db.get_supplier_name(domain)
+                return supplier
 
 
-def get_trackingnumber(company_name, msg_body):
-    hint = db.get_supplier_hint(company_name)
-    general_hints = ["Sendnungsnummer", "Trackingnummer", "Sendungsverfolgungsnummer"]
 
+def get_trackingnumber(company_name, msg_body, supplier):
+    if company_name != "N.A.":
+        hint = db.get_sender_hint(company_name)
+    else:
+        hint = db.get_supplier_hint(supplier)
+    general_hints = ["Sendnungsnummer", "Trackingnummer", "Sendungsverfolgungsnummer", "trackingnumber", "Paket", "Paketverfolgungsnummern", "AMAZON-Paket"]
+    msg_body = msg_body.replace("\n","").replace("\r","")
     if hint:
-        result = msg_body.find(hint)
-    else:
+        result = re.search(hint + r'\s?[A-z, a-z]{0,15}?\s?[:]?\s?[0-9]{3,}', msg_body)
+        #result = msg_body.find(hint)
+
+    if result is None:
         for hint in general_hints:
-            result = msg_body.find(hint)
-            if result:
+            result = re.search(hint + r'\s?[A-z, a-z]{0,15}?\s?[:]?\s?[0-9]{3,}', msg_body)
+            if result is not None:
                 break
-    if result == -1:
-        print("nothing found")
-    start = result + len(hint) + 1
-    extracted_string = msg_body[start:start+40]
-    print(extracted_string)
-    try:
-        tracking_number = [int(s) for s in extracted_string.split() if s.isdigit()]
-    except:
-        #TODO
-        print("TODO ERROR")
-    if tracking_number is not None and len(tracking_number) != 0:
-        return tracking_number[0]
+
+    start = result.start() + len(hint) + 1
+    extracted_string = msg_body[start:start+40].replace(".", "")
+    extracted_trackingnumber_string = re.findall(r'\b\d+', extracted_string)
+    if len(extracted_trackingnumber_string) > 0 and extracted_trackingnumber_string[0].isdigit():
+        try:
+            tn = int(extracted_trackingnumber_string[0])
+        except:
+            #TODO
+            print("TODO ERROR")
+        if tn is not None:
+            return tn
     else:
         return None
 
@@ -156,14 +181,16 @@ if __name__ == '__main__':
         if content == "error":
             continue
         else:
-            tracking_number = get_trackingnumber(sender, content)
-            if tracking_number is not None:
-                id = create_tracking(slug=supplier, tracking_number= str(tracking_number))
-                print ("id=" + id)
-                # TODO: add company to infos via aftership method
-                #     # TODO
-                #     delete_message(123)
+            tracking_number = get_trackingnumber(sender, content, supplier)
+            if tracking_number is not None and supplier != "N.A.":
+                #tid = create_tracking(slug=supplier, tracking_number= str(tracking_number))
+                #update_tracking(tid, title=str(sender))
+                print(supplier + "     :     " + str(tracking_number))
+            elif tracking_number is not None:
+                pass
+                #TODO: try with main suppliers
 
-            else:
-                #TODO
-                print("wip")
+
+
+
+            #delete_message(get_msg_id(message))

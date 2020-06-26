@@ -36,7 +36,7 @@ def get_backup():
     #if stderr_value:
     #    rest_builder.build_status_message(script_path=__file__, message=stderr_value.split('\r\n')[0])
     #else:
-    rest_builder.build_status_message(script_path=__file__, message=SUCCESSFUL)
+    rest_builder.send_status_to_server(script_path=__file__, message=SUCCESSFUL)
     clean_up_local_backup_folder(destination_folder)
 
 

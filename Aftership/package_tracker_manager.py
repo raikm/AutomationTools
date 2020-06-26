@@ -24,7 +24,7 @@ def update_tracking(tracking_id, **values):
     aftership.tracking.update_tracking(tracking_id=tracking_id, tracking=values)
     return True
 
-# delete tracking
+
 def get_tracking(tracking_id, fields=None):
     try:
         result = aftership.tracking.get_tracking(tracking_id=tracking_id, fields=','.join(fields))
@@ -40,3 +40,11 @@ def delete_tracking(tracking_id):
     except aftership.exception.NotFound:
         return False
     return True
+
+
+def cleanup_delivered_trackings():
+    try:
+        result = aftership.tracking.list_trackings()
+        return result['trackings']
+    except:
+        return None

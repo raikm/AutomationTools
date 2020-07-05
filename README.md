@@ -7,6 +7,8 @@ It is also a part of another project [Homepanorama](https://github.com/raikm/hom
 ## Summary
 ### Utilities 
 ✓ SQLite Integration
+
+
 ✓ REST Integration
 
 

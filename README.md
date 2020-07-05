@@ -1,6 +1,13 @@
 This project are python-scripts for repeated tasks what can be (partly-)automised.
 
-A REST library is provided for the interaction with the REST API for the web-based [Dashboard](https://github.com/raikm/homeproject-dashboard)
+A REST library is provided for an interaction with a REST API to inform about success or errors 
+
+It is also a part of another project [Homepanorama](https://github.com/raikm/homepanorama) were the information are displayed.
+
+## Summary
+✓
+✓
+
 
 ✔ [move_bill_to_month.py](https://github.com/raikm/AutomationTools/blob/master/Tools/move_bill_to_month.py)
 

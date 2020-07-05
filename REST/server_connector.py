@@ -11,7 +11,7 @@ class ServerConnector(object):
 
     def __init__(self, address=None):
         self.address = address
-        self.test_connection()
+        # self.test_connection()
 
     @staticmethod
     def test_connection():
@@ -27,11 +27,11 @@ class ServerConnector(object):
             return 1
         return 0
 
-    def send_status(self, data_json):
+    def send_status(self, data_json, script_id):
         try:
-            print(data_json)  # DEBUG
-            address = self.address + "scripts/status"
-            response = requests.post(address, json=data_json)
+            # print(data_json)  # DEBUG
+            address = "http://127.0.0.1:8000/scriptstatus/" + str(script_id) + "/"
+            response = requests.put(address, data=data_json)
             print(response.text)
         except Exception as e:
             print(e)

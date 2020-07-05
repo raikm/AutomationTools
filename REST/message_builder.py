@@ -9,7 +9,7 @@ import json
 import os
 from datetime import datetime
 
-timestamp = datetime.now().replace(microsecond=0).isoformat()
+
 
 
 class RESTMessageBuilder(object):
@@ -20,15 +20,15 @@ class RESTMessageBuilder(object):
         self.successful = "successful"
         self.fail = "fail"
 
-    def send_status_to_server(self, script_path, result, error_message):
+    def send_status_to_server(self, script_path, result, error_message, script_id):
         status_code = 1
         if result == self.successful:
             status_code = 0
         script_name = self.get_filename_without_extension(script_path)
-        data = {"script": script_name, "script_path": script_path, "status_code": status_code, "status": result, "error": error_message,
+        timestamp = datetime.now()
+        data = {"script_id": script_id, "name": script_name, "script_path": script_path, "status_code": status_code, "status_text": result, "error_text": error_message,
                 "timestamp": timestamp}
-        data_json = json.dumps(data)
-        self.server.send_status(data_json)
+        self.server.send_status(data, script_id)
 
     @staticmethod
     def get_filename_without_extension(file_path):

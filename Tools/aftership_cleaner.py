@@ -1,9 +1,9 @@
 from Aftership.package_tracker_manager import cleanup_delivered_trackings, delete_tracking
-from datetime import datetime, timedelta, timezone
-from REST.message_builder import RESTMessageBuilder
+from datetime import datetime
+from Tools.status_message_builder import StatusMessageBuilder
 
-
-mb = RESTMessageBuilder()
+SCRIPT_ID = 5
+mb = StatusMessageBuilder()
 trackings = cleanup_delivered_trackings()
 if trackings is None:
     exit()

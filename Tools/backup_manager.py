@@ -1,8 +1,4 @@
-import subprocess
-
-from urllib3.exceptions import NewConnectionError, MaxRetryError, ConnectTimeoutError
-
-from REST.message_builder import RESTMessageBuilder
+from Tools.status_message_builder import StatusMessageBuilder
 
 destination_folder = "/Users/raik/Backups/openhab/"
 
@@ -10,9 +6,10 @@ destination_folder = "/Users/raik/Backups/openhab/"
 raspberries = [("openhabian", "192.168.0.14", "~/.ssh/openhab/openhabkey", "/var/lib/openhab2/backups")]
 SUCCESSFUL = "successful"
 
+SCRIPT_ID = 6
 
 def get_backup():
-    rest_builder = RESTMessageBuilder()
+    rest_builder = StatusMessageBuilder()
 
     #todo test connection first!
 

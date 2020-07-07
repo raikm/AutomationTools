@@ -9,14 +9,14 @@ import json
 import os
 from datetime import datetime
 
+SCRIPT_ID = 9
 
 
-
-class RESTMessageBuilder(object):
-    SERVER_ADDRESS = "http://localhost:8080/HomeAPI/rest/" #TODO: make more generic and not hard coded here
+class StatusMessageBuilder(object):
+   #TODO: make more generic and not hard coded here
 
     def __init__(self):
-        self.server = ServerConnector(self.SERVER_ADDRESS)
+        self.server = ServerConnector()
         self.successful = "successful"
         self.fail = "fail"
 
@@ -28,7 +28,9 @@ class RESTMessageBuilder(object):
         timestamp = datetime.now()
         data = {"script_id": script_id, "name": script_name, "script_path": script_path, "status_code": status_code, "status_text": result, "error_text": error_message,
                 "timestamp": timestamp}
-        self.server.send_status(data, script_id)
+        self.server.send_script_status(data, script_id)
+
+
 
     @staticmethod
     def get_filename_without_extension(file_path):

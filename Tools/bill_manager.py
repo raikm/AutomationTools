@@ -6,6 +6,7 @@ import datetime
 import shutil
 
 #TODO: Automator: if file moved to desktop then run this script
+SCRIPT_ID = 8
 
 months = ["Unknown",
           "Januar",

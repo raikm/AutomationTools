@@ -9,10 +9,11 @@ from SQLite.db_handler import DBHandler
 import re
 import aftership
 from apiclient import errors
-from REST.message_builder import RESTMessageBuilder
+from Tools.status_message_builder import StatusMessageBuilder
 
+SCRIPT_ID = 3
 
-mb = RESTMessageBuilder()
+mb = StatusMessageBuilder()
 
 credentials_path = "../Resources/credentials.json"
 token_path = "../Resources/token.pickle"
@@ -206,10 +207,11 @@ if __name__ == '__main__':
                     pass
                     #TODO:
         mb.send_status_to_server(script_path=__file__, result=mb.successful,
-                                 error_message="")
+                                 error_message="", script_id=SCRIPT_ID)
     except Exception as e:
+        db.close_connection()
         mb.send_status_to_server(script_path=__file__, result=mb.fail,
-                             error_message=str(e))
+                             error_message=str(e), script_id=SCRIPT_ID)
 
 
 

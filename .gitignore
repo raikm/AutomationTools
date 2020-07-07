@@ -1,4 +1,4 @@
-Tools/create_bill.py
+Tools/bill_creator.py
 Resources/
 *.pyc
 *.cfg
@@ -12,4 +12,6 @@ venv/bin/Activate.ps1
 venv/bin/python
 venv/bin/python3
 .idea/AutomationTools.iml
+*.pyc
+*.pyc
 *.pyc

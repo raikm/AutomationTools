@@ -9,29 +9,48 @@ import requests
 
 class ServerConnector(object):
 
-    def __init__(self, address=None):
-        self.address = address
+    def __init__(self):
+        self.address = "http://localhost:8000/"
         # self.test_connection()
 
-    @staticmethod
-    def test_connection():
+    def test_connection(self):
         try:
-            address = "http://localhost:8080/HomeAPI/rest/server/status"
-            resp = requests.get(address)
+            resp = requests.get(self.address)
             if resp.status_code != 200:
                 print(resp.status_code)
                 return 1
         except Exception as e:
-            print(e)
-            # TODO: send Mail
+            print(e) # TODO: send Mail
             return 1
         return 0
 
-    def send_status(self, data_json, script_id):
+    def send_script_status(self, data_json, script_id):
         try:
-            # print(data_json)  # DEBUG
-            address = "http://127.0.0.1:8000/scriptstatus/" + str(script_id) + "/"
+            address = self.address + "scriptstatus/" + str(script_id) + "/"
+            requests.put(address, data=data_json)
+        except Exception as e:
+            print(e) #TODO
+
+    def send_data_for_id(self, data_json, data_address, data_id):
+        try:
+            address = self.address + data_address + "/" + str(data_id) + "/"
             response = requests.put(address, data=data_json)
+            print(response.text)
+        except Exception as e:
+            print(e)
+
+    def get_data(self, data_address, data_id):
+        try:
+            address = self.address + data_address + "/" + str(data_id) + "/"
+            response = requests.get(address)
+            print(response.text)
+        except Exception as e:
+            print(e)
+
+    def get_data(self, data_address):
+        try:
+            address = self.address + data_address + "/"
+            response = requests.get(address)
             print(response.text)
         except Exception as e:
             print(e)

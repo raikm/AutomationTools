@@ -1,12 +1,26 @@
 This project are python-scripts for repeated tasks what can be (partly-)automised.
 
-A REST library is provided for the interaction with the REST API for the web-based [Dashboard](https://github.com/raikm/homeproject-dashboard)
+A REST library is provided for an interaction with a REST API to inform about success or errors 
 
-✔ [move_bill_to_month.py](https://github.com/raikm/AutomationTools/blob/master/Tools/move_bill_to_month.py)
+It is also a part of another project [Homepanorama](https://github.com/raikm/homepanorama) were the information are displayed.
 
-- moves bills in to the current month-folder
-- trigged by AUTOMATOR on Mac OS with "Folder Action recieves files and folders added to __ and a
-Run shell Script:
-python /Users/*NAME*/PycharmProjects/AutomationTools/Tools/move_bill_to_month.py
+## Summary
+### Utilities 
+✓ SQLite Integration
 
-🔜 backup_openhab_server.py
+
+✓ REST Integration
+
+
+### Scripts
+✓ _move_bill_to_month.py_ : moves bills in to the current month-folder for bills
+
+
+✓ _aftership_cleaner.py_ : deletes delivered packages who are tracked via the aftership API (more information see [aftership-website]
+(https://docs.aftership.com/api/4/overview)
+
+
+✓ _create_bill.py_ : create bill papers for customers (config file is needed for publishing)
+
+
+✓ _gmail_reader.py_ : reads incoming packages mails to extract package trackingsnumbers

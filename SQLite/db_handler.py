@@ -27,6 +27,24 @@ class DBHandler(object):
         except sqlite3.Error as error:
             print("Failed to read data from sqlite table", error)
 
+    def get_value_from_column_by_id(self, table_name, colume_name, id):
+        try:
+            sqlite_select_query = "SELECT " + colume_name + " from " + table_name + " WHERE ID = " + id
+            self.db.execute(sqlite_select_query)
+            records = self.db.fetchall()
+            result = records[0][0]
+            return result
+        except sqlite3.Error as error:
+            print("Failed to read data from sqlite table", error)
+
+    def update_table(self, table_name, column_name, id, column_name_value):
+        try:
+            sqlite_insert_query = "UPDATE " + table_name +  " SET " + column_name + " = " + column_name_value + " WHERE ID = " + id
+            self.db.execute(sqlite_insert_query)
+            self.db_connection.commit()
+        except sqlite3.Error as error:
+            print("Failed to read data from sqlite table", error)
+
     def get_supplier_from_company(self, company_name):
         try:
             sqlite_select_query = "SELECT * from company_supplier where company = \"" + company_name + "\""

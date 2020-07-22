@@ -15,3 +15,5 @@ venv/bin/python3
 *.pyc
 *.pyc
 *.pyc
+*.pyc
+*.pyc

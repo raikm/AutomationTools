@@ -64,7 +64,7 @@ if __name__ == '__main__':
             gmail_reader
             db.update_table("gmail", "mail_count", "1", str(messages_count))
         if len(get_messages(service)) != 0:
-            # not every mail could be extracted
+            #TODO: not every mail could be extracted -> send info to server
             pass
         db.close_connection()
         mb.send_status_to_server(script_path=__file__, result=mb.successful,

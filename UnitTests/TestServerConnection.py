@@ -16,13 +16,16 @@ class TestStringMethods(unittest.TestCase):
     #     sc = ServerConnector()
     #     miflora.send_plant_data(sc)
 
+    def test_read_plant_data(self):
+        miflora.read_plant_data();
+
     # def test_get_plant_detail_data(self):
     #     sc = ServerConnector()
     #     sc.get_data("plant", 1)
-
-    def test_get_all_plant_detail_data(self):
-        sc = ServerConnector()
-        sc.get_data("allplants")
+    #
+    # def test_get_all_plant_detail_data(self):
+    #     sc = ServerConnector()
+    #     sc.get_data("allplants")
 
 if __name__ == '__main__':
     unittest.main()

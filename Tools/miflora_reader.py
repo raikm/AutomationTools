@@ -1,9 +1,8 @@
-
+# -*- coding: utf-8 -*-
 import sys
 
-from Tools.status_message_builder import StatusMessageBuilder
+from REST.server_connector import ServerConnector
 
-sys.path.insert(0, "/home/openhabian/.local/lib/python3.7/site-packages")
 
 from miflora.miflora_poller import MiFloraPoller, \
     MI_CONDUCTIVITY, MI_MOISTURE, MI_LIGHT, MI_TEMPERATURE, MI_BATTERY
@@ -62,22 +61,31 @@ def read_plant_data():
             data['timestamp'] = str(now)
             data.update(plant)
 
-            with open("/home/openhabian/plants/" + plantname + ".json" , "w") as json_file:
+            with open("/automation_scripts/plant_data/" + plantname + ".json" , "w") as json_file:
                 json.dump(data, json_file, indent=4, sort_keys=True)
                 json_file.close()
         except Exception as exception_message:
-            mb.send_status_to_server(script_path=__file__, result=mb.fail,
-                                     error_message=str(exception_message), script_id=SCRIPT_ID)
+            print(exception_message)
+            pass
+            # mb.send_status_to_server(script_path=__file__, result=mb.fail,
+            #                          error_message=str(exception_message), script_id=SCRIPT_ID)
             continue
-    mb.send_status_to_server(script_path=__file__, result=mb.successful, error_message="", script_id=SCRIPT_ID)
+    # mb.send_status_to_server(script_path=__file__, result=mb.successful, error_message="", script_id=SCRIPT_ID)
 
 
 def send_plant_data(sc):
     try:
         for plant in plants:
-            with open("./Testdata/plants/" + plant.get("name") + '.json') as f:
+            with open("/automation_scripts/plant_data/" + plant.get("name") + '.json') as f:
                 file_data = json.load(f)
                 sc.send_data_for_id(data_json=file_data, data_address="plant", data_id=plant.get("plant_id"))
     except Exception as exception_message:
-        mb.send_status_to_server(script_path=__file__, result=mb.fail, error_message=str(exception_message), script_id=SCRIPT_ID)
-    mb.send_status_to_server(script_path=__file__, result=mb.successful, error_message="", script_id=SCRIPT_ID)
+        print(exception_message)
+        pass
+        # mb.send_status_to_server(script_path=__file__, result=mb.fail, error_message=str(exception_message), script_id=SCRIPT_ID)
+    # mb.send_status_to_server(script_path=__file__, result=mb.successful, error_message="", script_id=SCRIPT_ID)
+
+if __name__ == '__main__':
+    read_plant_data()
+    sc = ServerConnector()
+    send_plant_data(sc)

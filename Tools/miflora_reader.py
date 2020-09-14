@@ -63,7 +63,7 @@ def read_plant_data():
             data.update(plant)
 
             # if file doesn't exist create new (w+)
-            with open("./Data/plant_data/" + plantname + ".json" , "w+") as json_file:
+            with open("./Ressources/plant_data/" + plantname + ".json" , "w+") as json_file:
                 json.dump(data, json_file, indent=4, sort_keys=True)
                 json_file.close()
         except Exception as exception_message:
@@ -76,7 +76,7 @@ def read_plant_data():
 def send_plant_data(sc):
     try:
         for plant in plants:
-            with open("./Data/plant_data/" + plant.get("name") + '.json') as f:
+            with open("./Ressources/plant_data/" + plant.get("name") + '.json') as f:
                 file_data = json.load(f)
                 sc.send_data_for_id(data_json=file_data, data_address="plant", data_id=plant.get("plant_id"))
     except Exception as exception_message:

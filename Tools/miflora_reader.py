@@ -1,8 +1,5 @@
 # -*- coding: utf-8 -*-
-import sys
-
-from REST.server_connector import ServerConnector
-
+import REST.server_connector.ServerConnector
 
 from miflora.miflora_poller import MiFloraPoller, \
     MI_CONDUCTIVITY, MI_MOISTURE, MI_LIGHT, MI_TEMPERATURE, MI_BATTERY

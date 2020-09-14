@@ -1,5 +1,8 @@
 Tools/bill_creator.py
-Resources/
+Resources/bills-58ba1c445d7b.json
+Resources/credentials.json
+Resources/external_services.cfg
+Ressources/server_info.cfg
 *.pyc
 *.cfg
 .idea/AutomationTools.iml
@@ -17,3 +20,4 @@ venv/bin/python3
 *.pyc
 *.pyc
 *.pyc
+Resources/token.pickle

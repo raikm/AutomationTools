@@ -10,7 +10,7 @@ import requests
 class ServerConnector(object):
 
     def __init__(self):
-        self.address = "http://localhost:8000/"
+        self.address = "http://192.168.1.80:8000/"
         # self.test_connection()
 
     def test_connection(self):

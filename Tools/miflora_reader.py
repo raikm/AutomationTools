@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-print("start")
 
 import sys
 sys.path.append("/")

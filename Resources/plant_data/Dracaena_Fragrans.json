@@ -1,0 +1,32 @@
+{
+    "address": "C4:7C:8D:66:F0:22",
+    "battery": "99",
+    "name": "Dracaena_Fragrans",
+    "plant_id": 6,
+    "soil_fertility": "344",
+    "soil_fertitlity_borders": {
+        "currency": "\u00b5S/cm",
+        "max": 1500,
+        "min": 200
+    },
+    "soil_moisture": "26",
+    "soil_moisture_borders": {
+        "currency": "%",
+        "max": 60,
+        "min": 15
+    },
+    "sunlight": "128",
+    "sunlight_intensity_borders": {
+        "currency": "lux",
+        "max": 50000,
+        "min": 2000
+    },
+    "temperature": "25.2",
+    "temperature_borders": {
+        "currency": "\u00b0C",
+        "max": 35,
+        "min": 10
+    },
+    "timestamp": "2020-09-14T12:26:25",
+    "version": "3.1.9"
+}

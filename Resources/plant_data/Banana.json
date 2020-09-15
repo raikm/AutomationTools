@@ -1,0 +1,32 @@
+{
+    "address": "C4:7C:8D:66:F1:08",
+    "battery": "100",
+    "name": "Banana",
+    "plant_id": 7,
+    "soil_fertility": "376",
+    "soil_fertitlity_borders": {
+        "currency": "\u00b5S/cm",
+        "max": 2000,
+        "min": 350
+    },
+    "soil_moisture": "21",
+    "soil_moisture_borders": {
+        "currency": "%",
+        "max": 60,
+        "min": 15
+    },
+    "sunlight": "47",
+    "sunlight_intensity_borders": {
+        "currency": "lux",
+        "max": 45000,
+        "min": 4000
+    },
+    "temperature": "25.3",
+    "temperature_borders": {
+        "currency": "\u00b0C",
+        "max": 35,
+        "min": 5
+    },
+    "timestamp": "2020-09-14T12:26:25",
+    "version": "3.1.9"
+}

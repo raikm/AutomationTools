@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
+
+print("start")
+
 import sys
-
-from REST.server_connector import ServerConnector
-
+sys.path.append("/")
+from AutomationTools.REST.server_connector import ServerConnector
 
 from miflora.miflora_poller import MiFloraPoller, \
     MI_CONDUCTIVITY, MI_MOISTURE, MI_LIGHT, MI_TEMPERATURE, MI_BATTERY
@@ -63,7 +65,7 @@ def read_plant_data():
             data.update(plant)
 
             # if file doesn't exist create new (w+)
-            with open("./Ressources/plant_data/" + plantname + ".json" , "w+") as json_file:
+            with open("/AutomationTools/Resources/plant_data/" + plantname + ".json" , "w+") as json_file:
                 json.dump(data, json_file, indent=4, sort_keys=True)
                 json_file.close()
         except Exception as exception_message:
@@ -76,7 +78,7 @@ def read_plant_data():
 def send_plant_data(sc):
     try:
         for plant in plants:
-            with open("./Ressources/plant_data/" + plant.get("name") + '.json') as f:
+            with open("/AutomationTools/Resources/plant_data/" + plant.get("name") + '.json') as f:
                 file_data = json.load(f)
                 sc.send_data_for_id(data_json=file_data, data_address="plant", data_id=plant.get("plant_id"))
     except Exception as exception_message:
@@ -85,6 +87,6 @@ def send_plant_data(sc):
     # mb.send_status_to_server(script_path=__file__, result=mb.successful, error_message="", script_id=SCRIPT_ID)
 
 if __name__ == '__main__':
-    read_plant_data()
+    #read_plant_data()
     sc = ServerConnector()
     send_plant_data(sc)

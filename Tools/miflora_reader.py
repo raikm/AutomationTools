@@ -19,14 +19,14 @@ SCRIPT_ID = 2
 now = datetime.now().replace(microsecond=0).isoformat()
 
 plants = [
-            {"plant_id" : 1, "name" : "Cocos", "address" : "C4:7C:8D:66:ED:A8", "soil_moisture_borders": {"min": 15, "max": 60, "currency" : "%"}, "soil_fertitlity_borders": {"min":350, "max": 2000, "currency" : "µS/cm"}, "sunlight_intensity_borders": {"min": 4000, "max": 75000, "currency" : "lux"}, "temperature_borders": {"min": 5, "max": 35, "currency" : "°C"}},
-            {"plant_id" : 2, "name" : "Strelitzia", "address" : "C4:7C:8D:66:EC:7C", "soil_moisture_borders": {"min": 15, "max": 60, "currency" : "%"}, "soil_fertitlity_borders": {"min": 350, "max": 2000, "currency" : "µS/cm"}, "sunlight_intensity_borders": {"min": 2500, "max": 300000, "currency" : "lux"}, "temperature_borders": {"min": 15, "max": 60, "currency" : "°C"}},
-            {"plant_id" : 3, "name" : "Schefflera", "address" : "C4:7C:8D:66:F1:BD", "soil_moisture_borders": {"min": 15, "max": 60, "currency" : "%"}, "soil_fertitlity_borders": {"min": 350, "max": 2000, "currency" : "µS/cm"}, "sunlight_intensity_borders": {"min": 1000, "max": 18000, "currency" : "lux"}, "temperature_borders": {"min": 6, "max": 32, "currency" : "°C"}},
-            {"plant_id" : 4, "name" : "Alocasia", "address" : "C4:7C:8D:66:F0:D6", "soil_moisture_borders": {"min": 15, "max": 60, "currency" : "%"}, "soil_fertitlity_borders": {"min": 350, "max": 2000, "currency" : "µS/cm"}, "sunlight_intensity_borders": {"min": 1000, "max": 22500, "currency" : "lux"}, "temperature_borders": {"min": 10, "max": 32, "currency" : "°C"}},
-            {"plant_id" : 5, "name" : "Monstera_Delicoisa", "address" : "C4:7C:8D:66:F1:06", "soil_moisture_borders": {"min": 15, "max": 60, "currency" : "%"}, "soil_fertitlity_borders": {"min": 350, "max": 2000, "currency" : "µS/cm"}, "sunlight_intensity_borders": {"min": 800, "max": 15000, "currency" : "lux"}, "temperature_borders": {"min": 12, "max": 32, "currency" : "°C"}},
-            {"plant_id" : 6, "name" : "Dracaena_Fragrans", "address" : "C4:7C:8D:66:F0:22", "soil_moisture_borders": {"min": 15, "max": 60, "currency" : "%"}, "soil_fertitlity_borders": {"min": 200, "max": 1500, "currency" : "µS/cm"}, "sunlight_intensity_borders": {"min": 2000, "max": 50000, "currency" : "lux"}, "temperature_borders": {"min": 10, "max": 35, "currency" : "°C"}},
-            {"plant_id" : 7, "name" : "Banana", "address" : "C4:7C:8D:66:F1:08", "soil_moisture_borders": {"min": 15, "max": 60, "currency" : "%"}, "soil_fertitlity_borders": {"min": 350, "max": 2000, "currency" : "µS/cm"}, "sunlight_intensity_borders": {"min": 4000, "max": 45000, "currency" : "lux"}, "temperature_borders": {"min": 5, "max": 35, "currency" : "°C"}},
-            {"plant_id" : 8, "name" : "Phoenix_Palm", "address" : "C4:7C:8D:66:ED:45", "soil_moisture_borders": {"min": 15, "max": 60, "currency" : "%"}, "soil_fertitlity_borders": {"min": 350, "max": 2000, "currency" : "µS/cm"}, "sunlight_intensity_borders": {"min": 3700, "max": 60000, "currency" : "lux"}, "temperature_borders": {"min": 5, "max": 35, "currency" : "°C"}},
+            {"plant_id" : 1, "name" : "Cocos", "address" : "C4:7C:8D:66:ED:A8"},
+            {"plant_id" : 2, "name" : "Strelitzia", "address" : "C4:7C:8D:66:EC:7C"},
+            {"plant_id" : 3, "name" : "Schefflera", "address" : "C4:7C:8D:66:F1:BD"},
+            {"plant_id" : 4, "name" : "Alocasia", "address" : "C4:7C:8D:66:F0:D6"},
+            {"plant_id" : 5, "name" : "Monstera_Delicoisa", "address" : "C4:7C:8D:66:F1:06"},
+            {"plant_id" : 6, "name" : "Dracaena_Fragrans", "address" : "C4:7C:8D:66:F0:22"},
+            {"plant_id" : 7, "name" : "Banana", "address" : "C4:7C:8D:66:F1:08"},
+            {"plant_id" : 8, "name" : "Phoenix_Palm", "address" : "C4:7C:8D:66:ED:45"},
             ]
 
 
@@ -86,6 +86,6 @@ def send_plant_data(sc):
     # mb.send_status_to_server(script_path=__file__, result=mb.successful, error_message="", script_id=SCRIPT_ID)
 
 if __name__ == '__main__':
-    #read_plant_data()
+    read_plant_data()
     sc = ServerConnector()
     send_plant_data(sc)

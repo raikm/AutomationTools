@@ -21,12 +21,17 @@ now = datetime.now().replace(microsecond=0).isoformat()
 plants = [
             {"plant_id" : 1, "name" : "Cocos", "address" : "C4:7C:8D:66:ED:A8"},
             {"plant_id" : 2, "name" : "Strelitzia", "address" : "C4:7C:8D:66:EC:7C"},
-            {"plant_id" : 3, "name" : "Schefflera", "address" : "C4:7C:8D:66:F1:BD"},
+            {"plant_id" : 3, "name" : "Ivy", "address" : "C4:7C:8D:66:F1:BD"}, # new borders!
             {"plant_id" : 4, "name" : "Alocasia", "address" : "C4:7C:8D:66:F0:D6"},
             {"plant_id" : 5, "name" : "Monstera_Delicoisa", "address" : "C4:7C:8D:66:F1:06"},
             {"plant_id" : 6, "name" : "Dracaena_Fragrans", "address" : "C4:7C:8D:66:F0:22"},
-            {"plant_id" : 7, "name" : "Banana", "address" : "C4:7C:8D:66:F1:08"},
+            {"plant_id" : 7, "name" : "Banana Terakota", "address" : "C4:7C:8D:66:F1:08"},
             {"plant_id" : 8, "name" : "Phoenix_Palm", "address" : "C4:7C:8D:66:ED:45"},
+            {"plant_id" : 9, "name" : "Strelitzia (S)", "address" : "80:EA:CA:89:25:C4"},
+            {"plant_id" : 10, "name" : "Banana White", "address" : "80:EA:CA:89:29:43"},
+            {"plant_id" : 11, "name" : "Monstera (S)", "address" : "C4:7C:8D:66:F1:08"},
+            {"plant_id" : 12, "name" : "Money Tree", "address" : "80:EA:CA:89:28:0C"},
+
             ]
 
 

@@ -11,7 +11,6 @@ from btlewrap.bluepy import BluepyBackend
 from datetime import datetime
 import json
 
-import os.path
 # API
 #mb = StatusMessageBuilder()
 SCRIPT_ID = 2
@@ -25,12 +24,12 @@ plants = [
             {"plant_id" : 4, "name" : "Alocasia", "address" : "C4:7C:8D:66:F0:D6"},
             {"plant_id" : 5, "name" : "Monstera_Delicoisa", "address" : "C4:7C:8D:66:F1:06"},
             {"plant_id" : 6, "name" : "Dracaena_Fragrans", "address" : "C4:7C:8D:66:F0:22"},
-            {"plant_id" : 7, "name" : "Banana Terakota", "address" : "C4:7C:8D:66:F1:08"},
+            {"plant_id" : 7, "name" : "Banana_Terakota", "address" : "C4:7C:8D:66:F1:08"},
             {"plant_id" : 8, "name" : "Phoenix_Palm", "address" : "C4:7C:8D:66:ED:45"},
-            {"plant_id" : 9, "name" : "Strelitzia (S)", "address" : "80:EA:CA:89:25:C4"},
-            {"plant_id" : 10, "name" : "Banana White", "address" : "80:EA:CA:89:29:43"},
-            {"plant_id" : 11, "name" : "Monstera (S)", "address" : "C4:7C:8D:66:F1:08"},
-            {"plant_id" : 12, "name" : "Money Tree", "address" : "80:EA:CA:89:28:0C"},
+            {"plant_id" : 9, "name" : "Strelitzia_(S)", "address" : "80:EA:CA:89:25:C4"},
+            {"plant_id" : 10, "name" : "Banana_White", "address" : "80:EA:CA:89:29:43"},
+            {"plant_id" : 11, "name" : "Monstera_(S)", "address" : "C4:7C:8D:66:F1:08"},
+            {"plant_id" : 12, "name" : "Money_Tree", "address" : "80:EA:CA:89:28:0C"},
 
             ]
 

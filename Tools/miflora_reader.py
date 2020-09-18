@@ -15,7 +15,7 @@ import json
 #mb = StatusMessageBuilder()
 SCRIPT_ID = 2
 
-now = datetime.now().replace(microsecond=0).isoformat()
+now = datetime.now(tz=None).replace(microsecond=0).isoformat()
 
 plants = [
             {"plant_id" : 1, "name" : "Cocos", "address" : "C4:7C:8D:66:ED:A8"},
@@ -41,7 +41,7 @@ def read_plant_data():
             poller = MiFloraPoller(plant.get("address"), BluepyBackend)
             plantname = plant.get("name")
 
-            print("---------" + plantname + "---------")
+            print("------" + plantname + "------")
             print("FW: {}".format(poller.firmware_version()))
             #TODO: save in correct datatype
             print("Name: {}".format(poller.name()))

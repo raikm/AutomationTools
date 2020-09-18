@@ -16,7 +16,7 @@ import os.path
 #mb = StatusMessageBuilder()
 SCRIPT_ID = 2
 
-now = datetime.now().replace(microsecond=0).isoformat()
+now = datetime.now(tz=None).replace(microsecond=0).isoformat()
 
 plants = [
             {"plant_id" : 1, "name" : "Cocos", "address" : "C4:7C:8D:66:ED:A8"},
@@ -27,6 +27,10 @@ plants = [
             {"plant_id" : 6, "name" : "Dracaena_Fragrans", "address" : "C4:7C:8D:66:F0:22"},
             {"plant_id" : 7, "name" : "Banana", "address" : "C4:7C:8D:66:F1:08"},
             {"plant_id" : 8, "name" : "Phoenix_Palm", "address" : "C4:7C:8D:66:ED:45"},
+	    {"plant_id" : 9, "name" : "Strelitzia (S)", "address" : "80:EA:CA:89:25:C4"},
+	    {"plant_id" : 10, "name" : "Banana White", "address" : "80:EA:CA:89:29:43"},
+	    {"plant_id" : 11, "name" : "Monstera (S)", "address" : "C4:7C:8D:66:F1:08"},
+	    {"plant_id" : 12, "name" : "Money Tree", "address" : "80:EA:CA:89:28:0C"},
             ]
 
 
@@ -37,7 +41,7 @@ def read_plant_data():
             poller = MiFloraPoller(plant.get("address"), BluepyBackend)
             plantname = plant.get("name")
 
-            print("---------" + plantname + "---------")
+            print("------" + plantname + "------")
             print("FW: {}".format(poller.firmware_version()))
             #TODO: save in correct datatype
             print("Name: {}".format(poller.name()))

@@ -1,55 +1,50 @@
 # -*- coding: utf-8 -*-
 
-
 import sys
-sys.path.append("/")
-from AutomationTools.REST.server_connector import ServerConnector
+import requests
+import configparser
 
-from miflora.miflora_poller import MiFloraPoller, \
-    MI_CONDUCTIVITY, MI_MOISTURE, MI_LIGHT, MI_TEMPERATURE, MI_BATTERY
+sys.path.append("/")
+
+from miflora.miflora_poller import MiFloraPoller, MI_CONDUCTIVITY, MI_MOISTURE, MI_LIGHT, MI_TEMPERATURE, MI_BATTERY
 from btlewrap.bluepy import BluepyBackend
 from datetime import datetime
-import json
 
-# API
-#mb = StatusMessageBuilder()
 SCRIPT_ID = 2
-
 now = datetime.now(tz=None).replace(microsecond=0).isoformat()
+configParser = configparser.RawConfigParser()
+configFilePath = r'../Resources/server_info.cfg'
+configParser.read(configFilePath)
+address = configParser.get('server', 'address')
+port = configParser.get('server', 'port')
 
-plants = [
-            {"plant_id" : 1, "name" : "Cocos", "address" : "C4:7C:8D:66:ED:A8"},
-            {"plant_id" : 2, "name" : "Strelitzia", "address" : "C4:7C:8D:66:EC:7C"},
-            {"plant_id" : 3, "name" : "Ivy", "address" : "C4:7C:8D:66:F1:BD"}, # new borders!
-            {"plant_id" : 4, "name" : "Alocasia", "address" : "C4:7C:8D:66:F0:D6"},
-            {"plant_id" : 5, "name" : "Monstera_Delicoisa", "address" : "C4:7C:8D:66:F1:06"},
-            {"plant_id" : 6, "name" : "Dracaena_Fragrans", "address" : "C4:7C:8D:66:F0:22"},
-            {"plant_id" : 7, "name" : "Banana_Terakota", "address" : "C4:7C:8D:66:F1:08"},
-            {"plant_id" : 8, "name" : "Phoenix_Palm", "address" : "C4:7C:8D:66:ED:45"},
-            {"plant_id" : 9, "name" : "Strelitzia_(S)", "address" : "80:EA:CA:89:25:C4"},
-            {"plant_id" : 10, "name" : "Banana_White", "address" : "80:EA:CA:89:29:43"},
-            {"plant_id" : 11, "name" : "Monstera_(S)", "address" : "C4:7C:8D:66:F1:08"},
-            {"plant_id" : 12, "name" : "Money_Tree", "address" : "80:EA:CA:89:28:0C"},
+def get_plant_information():
+    address = configParser.get('server', 'address')
+    response = requests.get("http://" + address + ":" + port + "/getAllPlants/")
+    return response.json()
 
-            ]
-
+def print_plant_data(plantname, poller):
+    # TODO: save in correct datatype
+    print("------" + plantname + "------")
+    print("FW: {}".format(poller.firmware_version()))
+    print("Name: {}".format(poller.name()))
+    print("Temperature: {}".format(poller.parameter_value(MI_TEMPERATURE)))
+    print("Moisture: {}".format(poller.parameter_value(MI_MOISTURE)))
+    print("Light: {}".format(poller.parameter_value(MI_LIGHT)))
+    print("Conductivity: {}".format(poller.parameter_value(MI_CONDUCTIVITY)))
+    print("Battery: {}".format(poller.parameter_value(MI_BATTERY)))
 
 def read_plant_data():
+    plants = get_plant_information()
+    all_plant_data = {}
+
     for plant in plants:
         try:
-            print(plant.get("address"))
-            poller = MiFloraPoller(plant.get("address"), BluepyBackend)
-            plantname = plant.get("name")
-
-            print("------" + plantname + "------")
-            print("FW: {}".format(poller.firmware_version()))
-            #TODO: save in correct datatype
-            print("Name: {}".format(poller.name()))
-            print("Temperature: {}".format(poller.parameter_value(MI_TEMPERATURE)))
-            print("Moisture: {}".format(poller.parameter_value(MI_MOISTURE)))
-            print("Light: {}".format(poller.parameter_value(MI_LIGHT)))
-            print("Conductivity: {}".format(poller.parameter_value(MI_CONDUCTIVITY)))
-            print("Battery: {}".format(poller.parameter_value(MI_BATTERY)))
+            print(plant["address"])
+            poller = MiFloraPoller(plant["address"], BluepyBackend)
+            plantname = plant["name"]
+            print_plant_data(plantname, poller)
+            id = plant["id"]
             battery = "{}".format(poller.parameter_value(MI_BATTERY))
             version = "{}".format(poller.firmware_version())
             sunlight = "{}".format(poller.parameter_value(MI_LIGHT))
@@ -57,39 +52,20 @@ def read_plant_data():
             moisture = "{}".format(poller.parameter_value(MI_MOISTURE))
             fertility = "{}".format(poller.parameter_value(MI_CONDUCTIVITY))
 
-            data = {}
-            data['battery'] = battery
-            data['version'] = version
-            data['sunlight'] = sunlight
-            data['temperature'] = temperature
-            data['soil_moisture'] = moisture
-            data['soil_fertility'] = fertility
-            data['timestamp'] = str(now)
-            data.update(plant)
+            plant_data = {'plant_id': id, 'battery': battery, 'version': version, 'sunlight': sunlight, 'temperature': temperature,
+                    'soil_moisture': moisture, 'soil_fertility': fertility, 'timestamp': str(now)}
+            all_plant_data.update(plant_data)
 
-            # if file doesn't exist create new (w+)
-            with open("/AutomationTools/Resources/plant_data/" + plantname + ".json" , "w+") as json_file:
-                json.dump(data, json_file, indent=4, sort_keys=True)
-                json_file.close()
         except Exception as exception_message:
             print(exception_message)
-            # mb.send_status_to_server(script_path=__file__, result=mb.fail, error_message=str(exception_message) + "Plant_with_Error: " + plantname, script_id=SCRIPT_ID)
+            #TODO: send error status to server
             continue
-    # mb.send_status_to_server(script_path=__file__, result=mb.successful, error_message="", script_id=SCRIPT_ID)
+        send_plant_data(plant["id"], plant_data)
 
+def send_plant_data(id, plant_data):
+    response = requests.put(("http://" + address + ":" + port + "/plant/" + str(id) + "/"), data=plant_data)
+    print(response.text)
 
-def send_plant_data(sc):
-    try:
-        for plant in plants:
-            with open("/AutomationTools/Resources/plant_data/" + plant.get("name") + '.json') as f:
-                file_data = json.load(f)
-                sc.send_data_for_id(data_json=file_data, data_address="plant", data_id=plant.get("plant_id"))
-    except Exception as exception_message:
-        print(exception_message)
-        # mb.send_status_to_server(script_path=__file__, result=mb.fail, error_message=str(exception_message), script_id=SCRIPT_ID)
-    # mb.send_status_to_server(script_path=__file__, result=mb.successful, error_message="", script_id=SCRIPT_ID)
 
 if __name__ == '__main__':
     read_plant_data()
-    sc = ServerConnector()
-    send_plant_data(sc)
